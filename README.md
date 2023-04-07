@@ -10,4 +10,4 @@
     <li>Регистрация и авторизация</li>
 </ul>
 <p>В дальнейшем планируется: добавить валидацию форм, сделать полностью адаптивным.</p>
-<a href="" target="_blank">Ссылка на страницу</a>
+<a href="https://sergeistepantsov.github.io/auth-mesto-react" target="_blank">Ссылка на страницу</a>

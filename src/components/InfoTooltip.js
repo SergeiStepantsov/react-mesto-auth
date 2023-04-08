@@ -3,7 +3,7 @@ import React from "react";
 import successAuthImg from "../images/success-auth-img.svg";
 import failAuthImg from "../images/fail-auth-img.svg";
 
-function InfoTooltip({ name, isOpen, onClose, status }) {
+function InfoTooltip({ name, isOpen, onClose, isSuccessTooltipStatus }) {
   return (
     <div className={`popup popup_type_${name} ${isOpen ? "popup_opened" : ""}`}>
       <div className="popup__conteiner">
@@ -16,10 +16,10 @@ function InfoTooltip({ name, isOpen, onClose, status }) {
         </button>
         <img
           className="popup__register-image"
-          src={status ? successAuthImg : failAuthImg}
+          src={isSuccessTooltipStatus ? successAuthImg : failAuthImg}
         />
         <p className="popup__register-text">
-          {status
+          {isSuccessTooltipStatus
             ? "Вы успешно зарегистрировались!"
             : "Что-то пошло не так! Попробуйте ещё раз."}
         </p>

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 
-function Login({ onLogin, buttonHeader }) {
-  useEffect(() => {
-    buttonHeader(true);
-    return () => {
-      buttonHeader(false);
-    };
-  }, []);
+// function Login({ onLogin, buttonHeader }) {
+//   useEffect(() => {
+//     buttonHeader(true);
+//     return () => {
+//       buttonHeader(false);
+//     };
+//   }, []);
 
+function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

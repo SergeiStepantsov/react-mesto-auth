@@ -20,18 +20,12 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({ name: "", link: "" });
-  const [currentUser, setCurrentUser] = useState({
-    name: "",
-    about: "",
-    avatar: "#",
-  });
+  const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
-  const [registerPage, setRegisterPage] = useState(false);
-  const [loginPage, setLoginPage] = useState(false);
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
-  const [status, setStatus] = useState(false);
+  const [isSuccessTooltipStatus, setIsSuccessTooltipStatus] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,8 +36,8 @@ function App() {
     if (loggedIn) {
       api
         .getUserInfo()
-        .then((name, about, avatar) => {
-          setCurrentUser(name, about, avatar);
+        .then((userData) => {
+          setCurrentUser(userData);
         })
         .catch((err) => console.log(err));
 
@@ -107,8 +101,8 @@ function App() {
   function handleUpdateUser(userInfo) {
     api
       .editProfile(userInfo)
-      .then((updatedInfo) => {
-        setCurrentUser(updatedInfo);
+      .then((userData) => {
+        setCurrentUser(userData);
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -117,8 +111,8 @@ function App() {
   function handleUpdateAvatar(avatar) {
     api
       .editAvatar(avatar)
-      .then((updatedAvatar) => {
-        setCurrentUser(updatedAvatar);
+      .then((userData) => {
+        setCurrentUser(userData);
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -140,12 +134,12 @@ function App() {
         if (res) {
           setIsInfoTooltipOpen(true);
           navigate("/sign-in");
-          setStatus(true);
+          setIsSuccessTooltipStatus(true);
         }
       })
       .catch(() => {
         setIsInfoTooltipOpen(true);
-        setStatus(false);
+        setIsSuccessTooltipStatus(false);
       });
   }
 
@@ -161,7 +155,7 @@ function App() {
       })
       .catch(() => {
         setIsInfoTooltipOpen(true);
-        setStatus(false);
+        setIsSuccessTooltipStatus(false);
       });
   }
 
@@ -191,13 +185,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header
-          loggedIn={loggedIn}
-          email={email}
-          onLogout={handleLogout}
-          registerPage={registerPage}
-          loginPage={loginPage}
-        />
+        <Header email={email} onLogout={handleLogout} />
 
         <Routes>
           <Route
@@ -219,20 +207,10 @@ function App() {
 
           <Route
             path="/sign-up"
-            element={
-              <Register
-                onRegister={handleRegister}
-                buttonHeader={setRegisterPage}
-              />
-            }
+            element={<Register onRegister={handleRegister} />}
           />
 
-          <Route
-            path="/sign-in"
-            element={
-              <Login onLogin={handleLogin} buttonHeader={setLoginPage} />
-            }
-          />
+          <Route path="/sign-in" element={<Login onLogin={handleLogin} />} />
 
           <Route
             path="*"
@@ -242,7 +220,7 @@ function App() {
           />
         </Routes>
 
-        <Footer loggedIn={loggedIn} />
+        {loggedIn && <Footer />}
 
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
@@ -272,7 +250,7 @@ function App() {
         <InfoTooltip
           name="register"
           isOpen={isInfoTooltipOpen}
-          status={status}
+          isSuccessTooltipStatus={isSuccessTooltipStatus}
           onClose={closeAllPopups}
         ></InfoTooltip>
       </div>
